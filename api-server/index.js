@@ -54,7 +54,7 @@ app.get("/number/avg", (req, res) => {
 
 // API for geet count of occurance of a element in a given array
 app.get("/number/count", (req, res) => {
-  const arr = req.query.numbers.split(",").map((str) => str.toString());
+  const arr = req.query.numbers?.split(",")?.map((str) => str.toString());
   const search = req.query.search;
 
   const result = countOccurance(arr, search);

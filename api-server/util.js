@@ -52,9 +52,17 @@ const findAvg = (numbers) => {
 };
 
 const findSort = (numbers, type) => {
-  console.log(numbers);
+  if (numbers.length === 0) {
+    return {
+      message: "Please enter valid numbers array",
+      status: 400,
+      data: null,
+    };
+  }
+
   const len = numbers.length;
   const sortedNum = [...numbers];
+  
   if (type === "asc") {
     let swapped;
     do {
@@ -101,6 +109,13 @@ const findSort = (numbers, type) => {
 };
 
 const countOccurance = (str, searchStr) => {
+  if (!str || !searchStr || searchStr === "") {
+    return {
+      message: "Please enter valid input",
+      status: 400,
+      data: null,
+    };
+  }
   let count = 0;
   for (let i = 0; i < str.length; i++) {
     if (str[i] === searchStr) {
@@ -112,5 +127,5 @@ const countOccurance = (str, searchStr) => {
     message: "Occurance found",
     status: 200,
   };
-}
+};
 module.exports = { findMin, findMax, findAvg, findSort, countOccurance };
