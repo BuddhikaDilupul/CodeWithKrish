@@ -53,16 +53,39 @@ const findAvg = (numbers) => {
 
 const findSort = (numbers, type) => {
   console.log(numbers);
-  
+  const len = numbers.length;
+  const sortedNum = [...numbers];
   if (type === "asc") {
-    const sortedNum = numbers.sort((a, b) => a - b);
+    let swapped;
+    do {
+      swapped = false;
+      for (let i = 0; i < len - 1; i++) {
+        if (sortedNum[i] > sortedNum[i + 1]) {
+          const temp = sortedNum[i];
+          sortedNum[i] = sortedNum[i + 1];
+          sortedNum[i + 1] = temp;
+          swapped = true;
+        }
+      }
+    } while (swapped);
     return {
       data: sortedNum,
       message: "Sorted numbers  ascending order",
       status: 200,
     };
   } else if (type === "desc") {
-    const sortedNum = numbers.sort((a, b) => b - a);
+    let swapped;
+    do {
+      swapped = false;
+      for (let i = 0; i < len - 1; i++) {
+        if (sortedNum[i] < sortedNum[i + 1]) {
+          const temp = sortedNum[i];
+          sortedNum[i] = sortedNum[i + 1];
+          sortedNum[i + 1] = temp;
+          swapped = true;
+        }
+      }
+    } while (swapped);
     return {
       data: sortedNum,
       message: "Sorted numbers descending order",
