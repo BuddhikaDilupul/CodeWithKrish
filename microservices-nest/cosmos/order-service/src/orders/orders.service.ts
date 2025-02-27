@@ -13,10 +13,13 @@ import { OrderStatus, updateOrderStatusDto } from './dto/order-update.dto';
 @Injectable()
 export class OrdersService {
   constructor(
+
     @InjectRepository(Order)
     private orderRepository: Repository<Order>,
+    
     @InjectRepository(OrderItem)
     private orderItemRepository: Repository<OrderItem>,
+    
   ) {}
 
   async create(createOrder: CreateOrderDto): Promise<Order | null> {

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { CustomerModule } from './customer/customer.module';
-import { Customer } from './customer/entity/customer.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { InventoryModule } from './inventory/inventory.module';
+import { Inventory } from './inventory/entity/inventory.entity';
 
 @Module({
   imports: [
@@ -12,10 +12,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'root',
       password: 'MS%T&X9bVk',
       database: 'cosmos',
-      entities: [Customer],
+      entities: [Inventory],
       synchronize: true, //only for dev
     }),
-    CustomerModule,
+    InventoryModule,
   ],
 })
 export class AppModule {}
