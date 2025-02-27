@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "2d6ab6b0-3c13-4b88-bc81-4170dae1fe2e",
+		"name": "NEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37282722"
+	},
+	"item": [
+		{
+			"name": "Customer-Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"john Doe\",\r\n    \"email\": \"john2@example.com\",\r\n    \"address\": \"123 Main St, City\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/customer/",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"customer",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inentory-Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/customer/all",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"customer",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inentory-Get-All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/customer/all",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"customer",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Innventory-Get-Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Laptop\",\r\n    \"price\": 1200.50,\r\n    \"quantity\": 10\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3003/inventory/",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"inventory",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Innventory-Get-Validate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Laptop\",\r\n    \"price\": 1200.50,\r\n    \"quantity\": 10\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3003/inventory/",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"inventory",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer-Get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"\",\r\n    \"email\": \"john@example.com\",\r\n    \"address\": \"123 Main St, City\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/customer/2",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"customer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer-Get-All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"\",\r\n    \"email\": \"john@example.com\",\r\n    \"address\": \"123 Main St, City\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/customer/",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"customer",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
