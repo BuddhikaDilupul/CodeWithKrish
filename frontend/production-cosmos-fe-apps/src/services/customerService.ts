@@ -1,5 +1,6 @@
 // Service file for all customer related APIs
 
+import Notiflix from "notiflix";
 import api from "./api";
 
 const port = "http://localhost:3001";
@@ -9,8 +10,15 @@ const baseUrl = port + base;
 // API call for save customers
 export const createCustomer = async (path: string, data: any) => {
   try {
-    return await api.post(baseUrl + path, data);
+    const res = await api.post(baseUrl + path, data);
+     Notiflix.Notify.success(
+          res.data?.message || "Customer Saved Successfully"
+        )
+    return res;
   } catch (error: any) {
+    if (error) {
+      Notiflix.Notify.failure("Error fetching data. Please try again later.");
+    }
     console.error(error);
   }
 };
@@ -18,8 +26,14 @@ export const createCustomer = async (path: string, data: any) => {
 // API call for fetch customers
 export const fetchCustomers = async (path: string) => {
   try {
-    return await api.get(baseUrl + path);
+    const res = await api.get(baseUrl + path);
+    return res;
   } catch (error: any) {
+    if (error) {
+      Notiflix.Notify.failure(
+        error.message || "Error fetching data. Please try again later."
+      );
+    }
     console.error(error);
   }
 };

@@ -27,7 +27,7 @@ export const fetchInventory = async (path: string) => {
     return res;
   } catch (error: any) {
     if (error) {
-      Notiflix.Notify.failure("Error fetching data. Please try again later.");
+      Notiflix.Notify.failure(error.message || "Error fetching data. Please try again later.");
     }
   }
 };
