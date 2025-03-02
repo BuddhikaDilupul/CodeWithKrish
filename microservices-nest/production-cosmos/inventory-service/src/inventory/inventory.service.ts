@@ -44,11 +44,36 @@ export class InventoryService {
         throw new NotFoundException(`Inventory item with ID ${id} not found`);
       }
     } else {
-      // If id having fetch all
+      // If id not having fetch all
       inventory = await this.inventoryRepository.find();
     }
 
     return inventory;
+  }
+
+  async updateStock(
+    productId: number,
+    quantity: number,
+  ): Promise<Inventory | Inventory[]> {
+    // Fetch data by id
+    const inventory: Inventory = await this.inventoryRepository.findOne({
+      where: {
+        id: productId,
+      },
+    });
+    if (!inventory) {
+      throw new NotFoundException(
+        `Inventory item with ID ${productId} not found`,
+      );
+    }
+    
+    if (inventory.quantity >= quantity) {
+      inventory.quantity = inventory.quantity - quantity;
+      
+      return await this.inventoryRepository.save(inventory);
+    } else {
+      throw new Error('Not enough stock');
+    }
   }
 
   // Validate stock availability

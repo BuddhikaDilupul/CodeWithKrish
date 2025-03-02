@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import { InentoryCreateDto } from './dto/create-inventor.dto';
 
@@ -22,13 +22,22 @@ export class InventoryController {
     // Validate item availability
     @Get('/products/:id/validate')
     async validateStock(@Param('id') id: number, @Query('quantity') quantity: number) {
-      return await this.inventoryService.validateStock(id, quantity);
+      const res =await this.inventoryService.validateStock(id, quantity);
+      console.log(res);
+      
+      return res;
     }
   
     // Get a inventory item
     @Get(':id')
     async get(@Param('id') id: number) {
       return await this.inventoryService.get(Number(id));
+    }
+    
+    // update stock
+    @Patch('/products/:id/quantity')
+    async updateStock(@Param('id') id: number, @Body('quantity') quantity: string) {
+      return await this.inventoryService.updateStock(Number(id), Number(quantity));
     }
     
 }
