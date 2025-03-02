@@ -1,6 +1,6 @@
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { formatCurrency } from "../../utils/CurruncyConvertor";
+import { formatCurrency } from "../../utils/curruncyConvertor";
 interface Props {
   inventory: {
     name: string;

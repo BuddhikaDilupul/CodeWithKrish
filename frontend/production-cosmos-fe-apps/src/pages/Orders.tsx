@@ -3,33 +3,85 @@ import { useEffect, useState } from "react";
 import Modal from "../component/modal/Modal";
 // import { createOrder, fetchOrder } from "../services/inventoryService";
 import View from "../component/views/ViewOrder";
-
+import Create from "../component/form/CreateOrder";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchCustomers } from "../services/customerService";
+import { fetchInventory } from "../services/inventoryService";
+import { createOrder, fetchOrder, updateOrderStatus } from "../services/orderService";
 
 const Order = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [inventory, setOrder] = useState<any[]>([]);
+  const queryClient = useQueryClient();
 
-  // Function to make new inventory item via triggering api
+  // Mutation used to create and invalidate existing fetched data
+  const orderMutation = useMutation({
+    mutationFn: ({ path, data }: { path: string; data: any }) =>
+      createOrder(path, data),
+    onSuccess: () => {
+      // Invalidate existing data
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+    },
+  });
+
+  // Fetching data using useQuery hook with mutation
   const create = async (data: any) => {
-    // const response = await createOrder("/", data);
-    // if (response?.data) {
-    //   setVisible(false);
-    //   setOrder((inventory: any[]) => [...inventory, response.data]);
-    // }
+    orderMutation.mutate({ path: "/", data });
+  };
+  
+  //Status update
+  // Mutation used to create and invalidate existing fetched data
+  const orderStatusMutation = useMutation({
+    mutationFn: ({ path, data }: { path: string; data: any }) =>
+      updateOrderStatus(path, data),
+    onSuccess: () => {
+      // Invalidate existing data
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+    },
+  });
+
+  // Fetching data using useQuery hook with mutation
+  const update = async (orderId: string, data: any) => {
+    orderStatusMutation.mutate({ path: `/${orderId}/status`, data });
   };
 
-  // Function to trigger get data inventory api
-  const getOrder = async () => {
-    // const response = await fetchOrder("/all");
-    // if (response) {
-    //   setOrder(response.data);
-    // }
-  };
+  // React query for api caching and fetching data. added 60*60*1000 stale time (cache)
+  const ordersQuery = useQuery({
+    queryKey: ["orders"],
+    queryFn: async () => {
+      return await fetchOrder("/all");
+    },
+    staleTime: 60 * 60 * 1000,
+  });
 
-  // Calling inventory function when page is loading
+  // React query for api caching and fetching data. added 60*60*1000 stale time (cache)
+  const customerQuery = useQuery({
+    queryKey: ["customers"],
+    queryFn: async () => {
+      return await fetchCustomers("/all");
+    },
+    staleTime: 60 * 60 * 1000,
+  });
+
+  // React query for api caching and fetching data. added 60*60*1000 stale time (cache)
+  const inventoryQuery = useQuery({
+    queryKey: ["inventory"],
+    queryFn: async () => {
+      return await fetchInventory("/all");
+    },
+    staleTime: 60 * 60 * 1000,
+  });
+  
+  // Fetching data from query and set to state
   useEffect(() => {
-    getOrder();
-  }, []);
+    if (ordersQuery?.data) {
+      setOrder(inventoryQuery?.data?.data);
+    }
+  }, [inventoryQuery.data]);
 
   return (
     <div>
@@ -47,12 +99,16 @@ const Order = () => {
       </div>
 
       {/* View inventory item component */}
-      <View orders={inventory} />
+      <View orders={ordersQuery.data?.data || []} stockUpdate={update} />
 
-      {/* Show create new item form */}
-      {/* <Modal visible={visible} setVisible={setVisible} label="Add Order">
-        <Create create={create} />
-      </Modal> */}
+      {/* Show create new order form */}
+      <Modal visible={visible} setVisible={setVisible} label="Add Order">
+        <Create
+          create={create}
+          customers={customerQuery.data?.data || []}
+          products={inventoryQuery?.data?.data || []}
+        />
+      </Modal>
     </div>
   );
 };

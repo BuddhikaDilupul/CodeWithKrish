@@ -3,7 +3,7 @@
 import Notiflix from "notiflix";
 import api from "./api";
 
-const port = "http://localhost:3001";
+const port = "http://localhost:3000";
 const base = "/customer";
 const baseUrl = port + base;
 
@@ -16,10 +16,14 @@ export const createCustomer = async (path: string, data: any) => {
         )
     return res;
   } catch (error: any) {
+    console.error(error)
     if (error) {
-      Notiflix.Notify.failure("Error fetching data. Please try again later.");
+      error?.response?.data?.message?.map((msg: string) => {
+        Notiflix.Notify.failure(
+          msg || "Error fetching data. Please try again later."
+        );
+      });
     }
-    console.error(error);
   }
 };
 
@@ -29,11 +33,13 @@ export const fetchCustomers = async (path: string) => {
     const res = await api.get(baseUrl + path);
     return res;
   } catch (error: any) {
-    if (error) {
-      Notiflix.Notify.failure(
-        error.message || "Error fetching data. Please try again later."
-      );
-    }
-    console.error(error);
+     console.error(error)
+     if (error) {
+       error?.response?.data?.message?.map((msg: string) => {
+         Notiflix.Notify.failure(
+           msg || "Error fetching data. Please try again later."
+         );
+       });
+     }
   }
 };

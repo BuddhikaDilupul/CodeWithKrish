@@ -21,12 +21,13 @@ interface Props{
   create: Function
 }
 const Create = (props: Props) => {
+
   const handleSubmit = (data: any, setSubmitting: any, resetForm: any) => {
-    console.log(data);
     props.create(data)
     setSubmitting(false);
     resetForm();
   };
+  
   return (
     <div className="w-full max-w-xl mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow-md">
       <Formik

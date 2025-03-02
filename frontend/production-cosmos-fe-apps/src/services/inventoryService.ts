@@ -3,7 +3,7 @@
 import Notiflix from "notiflix";
 import api from "./api";
 
-const port = "http://localhost:3003";
+const port = "http://localhost:3001";
 const base = "/inventory";
 const baseUrl = port + base;
 
@@ -13,10 +13,17 @@ export const createInventory = async (path: string, data: any) => {
     const res = await api.post(baseUrl + path, data);
     Notiflix.Notify.success(
       res.data?.message || "Inventory Created Successfully"
-    )
+    );
     return res;
   } catch (error: any) {
     console.error(error);
+    if (error) {
+      error?.response?.data?.message?.map((msg: string) => {
+        Notiflix.Notify.failure(
+          msg || "Error fetching data. Please try again later."
+        );
+      });
+    }
   }
 };
 
@@ -26,8 +33,13 @@ export const fetchInventory = async (path: string) => {
     const res = await api.get(baseUrl + path);
     return res;
   } catch (error: any) {
+    console.error(error);
     if (error) {
-      Notiflix.Notify.failure(error.message || "Error fetching data. Please try again later.");
+      error?.response?.data?.message?.map((msg: string) => {
+        Notiflix.Notify.failure(
+          msg || "Error fetching data. Please try again later."
+        );
+      });
     }
   }
 };
