@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CustomerService } from './customer.service';
-import { CreateCustomerDto } from 'src/dto/create-customer.dto';
+import { CreateCustomerDto } from 'src/customer/dto/create-customer.dto';
 
 @Controller('customer')
 export class CustomerController {
