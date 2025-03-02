@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Modal from "../component/modal/Modal";
-// import { createOrder, fetchOrder } from "../services/inventoryService";
 import View from "../component/views/ViewOrder";
 import Create from "../component/form/CreateOrder";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,7 +10,6 @@ import { createOrder, fetchOrder, updateOrderStatus } from "../services/orderSer
 
 const Order = () => {
   const [visible, setVisible] = useState<boolean>(false);
-  const [inventory, setOrder] = useState<any[]>([]);
   const queryClient = useQueryClient();
 
   // Mutation used to create and invalidate existing fetched data
@@ -22,6 +20,9 @@ const Order = () => {
       // Invalidate existing data
       queryClient.invalidateQueries({
         queryKey: ["orders"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["inventory"],
       });
     },
   });
@@ -75,13 +76,6 @@ const Order = () => {
     },
     staleTime: 60 * 60 * 1000,
   });
-  
-  // Fetching data from query and set to state
-  useEffect(() => {
-    if (ordersQuery?.data) {
-      setOrder(inventoryQuery?.data?.data);
-    }
-  }, [inventoryQuery.data]);
 
   return (
     <div>
