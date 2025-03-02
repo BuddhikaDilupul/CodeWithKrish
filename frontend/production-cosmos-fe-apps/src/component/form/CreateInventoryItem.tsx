@@ -4,8 +4,8 @@ import * as Yup from "yup";
 // Validation Schema for create invemtory item
 const inventorySchema = Yup.object().shape({
   name: Yup.string()
-    .min(2, "Name is too Short!")
-    .max(50, "Name is too Long!")
+    .min(2, "Name is too Short")
+    .max(25, "Name is too Long")
     .required("Item Name is Required"),
 
   price: Yup.number()
@@ -14,10 +14,9 @@ const inventorySchema = Yup.object().shape({
     .typeError("Price must be a valid number"),
 
   quantity: Yup.number()
-    .integer("Quantity must be a whole number")
+    .integer("Quantity must be a full number")
     .positive("Quantity must be a positive number")
     .required("Quantity is Required")
-    .typeError("Quantity must be a valid number"),
 });
 interface Props {
   create: Function;

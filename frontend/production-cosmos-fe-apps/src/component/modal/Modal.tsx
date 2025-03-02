@@ -20,7 +20,7 @@ export default function Modal(props: Props) {
         }}
       >
         <div className="m-0">
-          {/* Content will display here */}
+          {/* Content will render belowas child */}
             {props.children}
         </div>
       </Dialog>

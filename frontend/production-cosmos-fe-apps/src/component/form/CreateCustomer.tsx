@@ -4,8 +4,8 @@ import * as Yup from "yup";
 // Validation Schema
 const createSchema = Yup.object().shape({
   name: Yup.string()
-    .min(2, "Name is too Short!")
-    .max(50, "Name is too Long!")
+    .min(2, "Name is too Short")
+    .max(25, "Name is too Long")
     .required("Name is Required"),
 
   email: Yup.string()
@@ -13,8 +13,7 @@ const createSchema = Yup.object().shape({
     .required("Email is Required"),
 
   address: Yup.string()
-    .min(5, "Address is too Short!")
-    .max(100, "Address is too Long!")
+    .min(5, "Address is too Short")
     .required("Address is required"),
 });
 interface Props{
@@ -27,7 +26,7 @@ const Create = (props: Props) => {
     setSubmitting(false);
     resetForm();
   };
-  
+
   return (
     <div className="w-full max-w-xl mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow-md">
       <Formik
