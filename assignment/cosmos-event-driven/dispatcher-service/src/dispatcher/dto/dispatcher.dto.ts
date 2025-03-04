@@ -2,7 +2,7 @@ import { IsInt, IsNotEmpty } from 'class-validator';
 
 export class DispatcherDto {
   @IsNotEmpty()
-  vehicleNo: string;
+  vehicle_number: string;
   @IsNotEmpty()
   city: string;
 }

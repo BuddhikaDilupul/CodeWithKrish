@@ -9,8 +9,8 @@ import {
   export class VehicleDispatcher {
     @PrimaryGeneratedColumn()
     id: number;
-    @Column()
-    vehicleNo: string;
+    @Column({unique: true})
+    vehicle_number: string;
     @Column()
     city: string;
   }

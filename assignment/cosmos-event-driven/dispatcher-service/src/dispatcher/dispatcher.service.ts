@@ -36,7 +36,7 @@ export class DispatcherService implements OnModuleInit {
     }
     // aquire lock
     for (const item of vehicles) {
-      const lockKey = `buddhika:dispatcher:${item.vehicleNo}`;
+      const lockKey = `buddhika:dispatcher:${item.vehicle_number}`;
       console.log(lockKey);
 
       const lock = await this.redis.set(
@@ -48,25 +48,25 @@ export class DispatcherService implements OnModuleInit {
       );
       if (!lock) {
         console.log(
-          `Vehicle ${item.vehicleNo} is been locked by another process. Plase try again leter`,
+          `Vehicle ${item.vehicle_number} is been locked by another process. Plase try again leter`,
         );
       } else {
-        console.log(`Vehicle ${item.vehicleNo} is available`);
+        console.log(`Vehicle ${item.vehicle_number} is available`);
         break;
       }
     }
   }
 
   // release vehicle
-  async releaseVehicle(vehicleNo: string): Promise<any> {
-    const lockKey = `buddhika:dispatcher:${vehicleNo}`;
+  async releaseVehicle(vehicle_number: string): Promise<any> {
+    const lockKey = `buddhika:dispatcher:${vehicle_number}`;
     
     const release = await this.redis.del(lockKey);
     if (release) {
-      console.log(`Vehicle ${vehicleNo} is released`);
+      console.log(`Vehicle ${vehicle_number} is released`);
       return { message: 'Vehicle is released' };
     } else {
-      throw new BadRequestException(`Vehicle ${vehicleNo} is not available`);
+      throw new BadRequestException(`Vehicle ${vehicle_number} is not available`);
     }
   }
 
@@ -74,10 +74,10 @@ export class DispatcherService implements OnModuleInit {
   async dispatcherInfo(
     dispatcherDto: DispatcherDto,
   ): Promise<VehicleDispatcher> {
-    const { city, vehicleNo } = dispatcherDto;
+    const { city, vehicle_number } = dispatcherDto;
     const dispatcher = this.dispatcherRepository.create({
       city,
-      vehicleNo,
+      vehicle_number,
     });
     return this.dispatcherRepository.save(dispatcher);
   }
