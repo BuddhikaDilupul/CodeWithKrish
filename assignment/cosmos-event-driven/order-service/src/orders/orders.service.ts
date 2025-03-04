@@ -40,7 +40,7 @@ export class OrdersService implements OnModuleInit {
   }
 
   async create(createOrderDto: createOrderDto): Promise<any> {
-    const { customerId, items } = createOrderDto;
+    const { customerId, items, city } = createOrderDto;
 
     // Validate customer exists
     let customerName = '';
@@ -57,13 +57,21 @@ export class OrdersService implements OnModuleInit {
     }
 
     // aquire lock
-    for(const item of items){
-      const lockKey = `buddhika:product:${item.productId}`
+    for (const item of items) {
+      const lockKey = `buddhika:product:${item.productId}`;
       console.log(lockKey);
-      
-      const lock = await this.redis.set(lockKey, "locked","EX",3600*24, "NX")
-      if(!lock){
-        throw new BadRequestException(`Product ${item.productId} is been locked by another process. Plase try agaim leter`)
+
+      const lock = await this.redis.set(
+        lockKey,
+        'locked',
+        'EX',
+        3600 * 24,
+        'NX',
+      );
+      if (!lock) {
+        throw new BadRequestException(
+          `Product ${item.productId} is been locked by another process. Plase try agaim leter`,
+        );
       }
     }
     // produce odrer as an event
@@ -72,7 +80,7 @@ export class OrdersService implements OnModuleInit {
       topic: 'buddhika.order.create',
       messages: [
         {
-          value: JSON.stringify({ customerId, customerName, items }),
+          value: JSON.stringify({ customerId, customerName, items, city }),
         },
       ],
     });
@@ -111,13 +119,14 @@ export class OrdersService implements OnModuleInit {
   // Save order to db
   async saveOrder(createOrderDto: createOrderDto, customerName: string) {
     try {
-      const { customerId, items } = createOrderDto;
+      const { customerId, items, city } = createOrderDto;
       const order = this.orderRepository.create({
         customerId,
+        city,
         status: 'PENDING',
       });
       const savedOrder = await this.orderRepository.save(order);
-
+      
       const orderItems = items.map((item) =>
         this.orderItemRepository.create({
           productId: item.productId,
@@ -148,10 +157,10 @@ export class OrdersService implements OnModuleInit {
     });
     await this.consumer.run({
       eachMessage: async ({ message }) => {
-        const { customerId, customerName, items } = JSON.parse(
+        const { customerId, customerName, city, items } = JSON.parse(
           message.value.toString(),
         );
-        await this.saveOrder({ customerId, items }, customerName);
+        await this.saveOrder({ customerId, city, items }, customerName);
       },
     });
   }

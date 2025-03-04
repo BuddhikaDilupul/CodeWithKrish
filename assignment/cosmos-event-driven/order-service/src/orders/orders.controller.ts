@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, SetMetadata, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, SetMetadata, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { createOrderDto } from './dto/create-order.dto';
 import { OrdersService } from './orders.service';
 import { Order } from './entity/order.entity';
@@ -11,6 +11,7 @@ export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
   async create(@Body() createOrderDto: createOrderDto): Promise<Order> {
     return await this.ordersService.create(createOrderDto);
   }

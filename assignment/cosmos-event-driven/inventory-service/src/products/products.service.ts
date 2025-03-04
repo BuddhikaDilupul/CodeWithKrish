@@ -68,23 +68,23 @@ export class ProductsService implements OnModuleInit {
 
     await this.consumer.run({
       eachMessage: async ({ message }) => {
-        const { customerId, customerName, items } = JSON.parse(
+        const { customerId, customerName, items, city } = JSON.parse(
           message.value.toString(),
         );
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>");
-        
+        console.log(city, '>>>>>>>>>>>>>>>>>>>>>>>>');
+
         for (const item of items) {
           await this.reduceStock(item.productId, item.quantity);
           const lockKey = `buddhika:product:${item.productId}`;
           console.log(lockKey);
-          
+
           const lock = await this.redis.del(lockKey);
         }
         await this.producer.send({
           topic: 'buddhika.order.inventory.update',
           messages: [
             {
-              value: JSON.stringify({ customerId, customerName, items }),
+              value: JSON.stringify({ customerId, customerName, items, city }),
             },
           ],
         });
