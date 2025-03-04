@@ -25,9 +25,9 @@ export class OrdersController {
   ) {
     return await this.ordersService.updateOrderStaus(id, updateOrderStatus);
   }
-  @Get(':id')
-  @UseGuards(AuthGuard('jwt'), PermissionsGuard)
-  @SetMetadata('permissions', "order:read")
+  // @Get(':id')
+  // @UseGuards(AuthGuard('jwt'), PermissionsGuard)
+  // @SetMetadata('permissions', "order:read")
   async fetch(@Param('id') id: number) {
     return await this.ordersService.fetch(id);
   }
